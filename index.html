@@ -3,28 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buzzer P2P - Sin Servidor</title>
+    <title>Permission To Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div id="setup-screen" class="container">
-        <h1>Buzzer Pro</h1>
-        <button onclick="startAsHost()" class="setup-btn">Crear Sala (Host)</button>
-        <div class="divider">ó</div>
-        <input type="text" id="join-id" placeholder="ID de la sala">
-        <button onclick="startAsPlayer()" class="setup-btn secondary">Unirse</button>
+        <h1>Permission To Game</h1>
+        <input type="text" id="player-name" placeholder="Tu Nombre">
+        
+        <div class="setup-actions">
+            <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
+            <div class="divider">ó</div>
+            <input type="text" id="join-id" placeholder="Código de Sala">
+            <button onclick="startAsPlayer()" class="setup-btn secondary">Unirse</button>
+        </div>
     </div>
 
     <div id="game-screen" class="container hidden">
-        <h2 id="room-display">Sala: ---</h2>
-        <div id="status-text">Esperando...</div>
-        
-        <button id="main-buzzer" class="hidden">¡PULSA!</button>
-        
-        <div id="host-view" class="hidden">
-            <div id="winner-box">?</div>
-            <button id="reset-btn">Reiniciar Ronda</button>
+        <div class="header">
+            <span id="room-display">SALA: ---</span>
+            <span id="player-display">Jugador: ---</span>
+        </div>
+
+        <div id="winner-banner" class="hidden">
+            <p>¡GANADOR!</p>
+            <h2 id="winner-name">---</h2>
+        </div>
+
+        <div class="buzzer-area">
+            <button id="main-buzzer">¡PULSAR!</button>
+        </div>
+
+        <div id="host-controls" class="hidden">
+            <button id="reset-btn">Siguiente Ronda</button>
         </div>
     </div>
 
