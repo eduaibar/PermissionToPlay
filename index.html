@@ -10,7 +10,16 @@
 
     <div id="setup-screen" class="container">
         <h1>Permission To Game</h1>
+        
         <input type="text" id="player-name" placeholder="Tu Nombre">
+        
+        <p>Elige tu personaje:</p>
+        <div class="avatar-selector">
+            <img src="avatar1.png" class="avatar-option selected" data-img="avatar1.png" onclick="selectAvatar(this)">
+            <img src="avatar2.png" class="avatar-option" data-img="avatar2.png" onclick="selectAvatar(this)">
+            <img src="avatar3.png" class="avatar-option" data-img="avatar3.png" onclick="selectAvatar(this)">
+            <img src="avatar4.png" class="avatar-option" data-img="avatar4.png" onclick="selectAvatar(this)">
+        </div>
         
         <div class="setup-actions">
             <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
@@ -26,11 +35,8 @@
             <span id="player-display">YO: ---</span>
         </div>
 
-        <div id="player-list-container">
-            <div id="player-list"></div>
-        </div>
-
         <div id="winner-banner" class="hidden">
+            <img id="winner-photo" src="" alt="Ganador">
             <p>¡GANADOR!</p>
             <h2 id="winner-name">---</h2>
         </div>
