@@ -1,85 +1,106 @@
 :root {
-    --primary: #6c5ce7;
-    --danger: #ff7675;
-    --dark: #2d3436;
-    --gold: #fdcb6e;
+    --primary: #4834d4;
+    --danger: #eb4d4b;
+    --success: #6ab04c;
+    --dark: #130f40;
 }
 
 body {
     margin: 0;
-    font-family: 'Inter', sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background: var(--dark);
     color: white;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    overflow: hidden;
 }
 
 .container {
     text-align: center;
-    padding: 20px;
-    width: 100%;
+    width: 90%;
     max-width: 400px;
 }
 
 .hidden { display: none !important; }
 
-/* Botones de inicio */
-.setup-btn {
+/* Setup */
+input {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
+    border-radius: 8px;
     border: none;
-    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.setup-btn {
+    width: 100%;
+    padding: 15px;
+    border: none;
+    border-radius: 8px;
     background: var(--primary);
     color: white;
-    font-size: 1.1rem;
+    font-weight: bold;
     cursor: pointer;
 }
 
-.secondary { background: #444; }
+.secondary { background: #30336b; }
 
-input {
-    width: 90%;
-    padding: 12px;
-    border-radius: 10px;
-    border: none;
-    margin-bottom: 10px;
-    text-align: center;
+/* Juego */
+.header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    opacity: 0.7;
+    margin-bottom: 20px;
 }
 
-/* El Pulsador */
+#winner-banner {
+    background: var(--success);
+    padding: 10px;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    animation: pop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop {
+    0% { transform: scale(0.5); }
+    100% { transform: scale(1); }
+}
+
 #main-buzzer {
-    width: 250px;
-    height: 250px;
+    width: 280px;
+    height: 280px;
     border-radius: 50%;
-    border: 10px solid rgba(255,255,255,0.1);
-    background: radial-gradient(circle, var(--danger), #d63031);
+    border: 15px solid rgba(255,255,255,0.1);
+    background: radial-gradient(circle, var(--danger), #c0392b);
     color: white;
     font-size: 2rem;
     font-weight: bold;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
     cursor: pointer;
+    transition: transform 0.1s;
 }
 
-#main-buzzer:active { transform: scale(0.95); }
-#main-buzzer:disabled { background: #555; opacity: 0.5; }
+#main-buzzer:active { transform: scale(0.9); }
+#main-buzzer:disabled { 
+    background: #535c68; 
+    box-shadow: none;
+    opacity: 0.6;
+}
 
-/* Caja del Ganador (Host) */
-#winner-box {
-    font-size: 3rem;
-    color: var(--gold);
-    margin: 30px 0;
-    font-weight: bold;
-    text-transform: uppercase;
+#host-controls {
+    margin-top: 30px;
 }
 
 #reset-btn {
-    background: none;
-    border: 2px solid white;
-    color: white;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
+    background: white;
+    color: var(--dark);
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
 }
