@@ -4,7 +4,7 @@ let connections = [];
 let isHost = false;
 let winnerDeclared = false;
 let myName = "";
-let myAvatar = "avatar1.png"; // Avatar por defecto
+let myAvatar = "imagenes/avatar1.png"; // Actualizado con el nombre de la carpeta
 
 const btn = document.getElementById('main-buzzer');
 const winnerBanner = document.getElementById('winner-banner');
@@ -12,7 +12,6 @@ const winnerNameSpan = document.getElementById('winner-name');
 const winnerPhotoImg = document.getElementById('winner-photo');
 const resetBtn = document.getElementById('reset-btn');
 
-// Selección de avatar en la UI
 function selectAvatar(element) {
     document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
     element.classList.add('selected');
@@ -63,10 +62,8 @@ function handleGlobalBuzzer(name, avatar) {
     if (winnerDeclared) return;
     winnerDeclared = true;
     
-    // 1. Mostrar en mi pantalla
     showWinnerUI(name, avatar);
     
-    // 2. Avisar a todos
     connections.forEach(conn => {
         if (conn.open) conn.send({ type: 'WINNER', name: name, avatar: avatar });
     });
@@ -75,7 +72,7 @@ function handleGlobalBuzzer(name, avatar) {
 function showWinnerUI(name, avatar) {
     winnerDeclared = true;
     winnerNameSpan.innerText = name;
-    winnerPhotoImg.src = avatar; // Ponemos la foto del ganador
+    winnerPhotoImg.src = avatar; 
     winnerBanner.classList.remove('hidden');
     btn.disabled = true;
 }
