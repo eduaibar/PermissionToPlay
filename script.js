@@ -4,7 +4,7 @@ let connections = [];
 let isHost = false;
 let winnerDeclared = false;
 let myName = "";
-let playerNames = []; // Lista para guardar los nombres
+let playerNames = []; 
 
 const btn = document.getElementById('main-buzzer');
 const winnerBanner = document.getElementById('winner-banner');
@@ -13,9 +13,9 @@ const resetBtn = document.getElementById('reset-btn');
 const playerListDiv = document.getElementById('player-list');
 
 function startAsHost() {
-    myName = document.getElementById('player-name').value.trim() || "Host";
+    myName = document.getElementById('player-name').value.trim() || "Anfitrión";
     isHost = true;
-    playerNames = [myName]; // El host es el primero en la lista
+    playerNames = [myName];
     
     const roomID = Math.random().toString(36).substring(2, 6).toUpperCase();
     peer = new Peer(roomID);
@@ -30,21 +30,16 @@ function startAsHost() {
         connections.push(conn);
         
         conn.on('data', (data) => {
-            // NUEVO: El jugador envía su nombre al conectar
             if (data.type === 'JOIN') {
-                playerNames.push(data.name);
+                if (!playerNames.includes(data.name)) {
+                    playerNames.push(data.name);
+                }
                 updatePlayerListUI();
-                broadcastPlayerList(); // Avisar a todos de la nueva lista
+                broadcastPlayerList(); 
             }
             if (data.type === 'PRESS' && !winnerDeclared) {
                 handleGlobalBuzzer(data.name);
             }
-        });
-
-        conn.on('close', () => {
-            connections = connections.filter(c => c !== conn);
-            // Nota: Para simplificar, no eliminamos de la lista visual 
-            // a menos que quieras una lógica más compleja de seguimiento.
         });
     });
 }
@@ -61,8 +56,10 @@ function startAsPlayer() {
 
         connToHost.on('open', () => {
             initGameUI(roomID);
-            // ENVIAR NOMBRE AL ENTRAR
-            connToHost.send({ type: 'JOIN', name: myName });
+            // Enviamos el nombre después de un mini retardo para asegurar conexión
+            setTimeout(() => {
+                connToHost.send({ type: 'JOIN', name: myName });
+            }, 500);
         });
 
         connToHost.on('data', (data) => {
@@ -76,7 +73,6 @@ function startAsPlayer() {
     });
 }
 
-// NUEVO: Envía la lista de jugadores a todos
 function broadcastPlayerList() {
     connections.forEach(conn => {
         if (conn.open) {
@@ -85,7 +81,6 @@ function broadcastPlayerList() {
     });
 }
 
-// NUEVO: Actualiza los cuadraditos con nombres en la pantalla
 function updatePlayerListUI() {
     playerListDiv.innerHTML = "";
     playerNames.forEach(name => {
@@ -116,6 +111,7 @@ function resetBuzzerUI() {
     winnerDeclared = false;
     winnerBanner.classList.add('hidden');
     btn.disabled = false;
+    winnerNameSpan.innerText = "---";
 }
 
 btn.onclick = () => {
