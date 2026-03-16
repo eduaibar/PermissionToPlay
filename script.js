@@ -4,41 +4,38 @@ let connections = [];
 let isHost = false;
 let winnerDeclared = false;
 let myName = "";
-let playerNames = []; 
+let myAvatar = "avatar1.png"; // Avatar por defecto
 
 const btn = document.getElementById('main-buzzer');
 const winnerBanner = document.getElementById('winner-banner');
 const winnerNameSpan = document.getElementById('winner-name');
+const winnerPhotoImg = document.getElementById('winner-photo');
 const resetBtn = document.getElementById('reset-btn');
-const playerListDiv = document.getElementById('player-list');
+
+// Selección de avatar en la UI
+function selectAvatar(element) {
+    document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
+    element.classList.add('selected');
+    myAvatar = element.getAttribute('data-img');
+}
 
 function startAsHost() {
     myName = document.getElementById('player-name').value.trim() || "Anfitrión";
     isHost = true;
-    playerNames = [myName];
     
     const roomID = Math.random().toString(36).substring(2, 6).toUpperCase();
     peer = new Peer(roomID);
 
     peer.on('open', (id) => {
         initGameUI(id);
-        updatePlayerListUI();
         document.getElementById('host-controls').classList.remove('hidden');
     });
 
     peer.on('connection', (conn) => {
         connections.push(conn);
-        
         conn.on('data', (data) => {
-            if (data.type === 'JOIN') {
-                if (!playerNames.includes(data.name)) {
-                    playerNames.push(data.name);
-                }
-                updatePlayerListUI();
-                broadcastPlayerList(); 
-            }
             if (data.type === 'PRESS' && !winnerDeclared) {
-                handleGlobalBuzzer(data.name);
+                handleGlobalBuzzer(data.name, data.avatar);
             }
         });
     });
@@ -53,56 +50,32 @@ function startAsPlayer() {
     peer = new Peer();
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-
-        connToHost.on('open', () => {
-            initGameUI(roomID);
-            // Enviamos el nombre después de un mini retardo para asegurar conexión
-            setTimeout(() => {
-                connToHost.send({ type: 'JOIN', name: myName });
-            }, 500);
-        });
+        initGameUI(roomID);
 
         connToHost.on('data', (data) => {
-            if (data.type === 'WINNER') showWinnerUI(data.name);
+            if (data.type === 'WINNER') showWinnerUI(data.name, data.avatar);
             if (data.type === 'RESET') resetBuzzerUI();
-            if (data.type === 'PLAYER_LIST') {
-                playerNames = data.list;
-                updatePlayerListUI();
-            }
         });
     });
 }
 
-function broadcastPlayerList() {
-    connections.forEach(conn => {
-        if (conn.open) {
-            conn.send({ type: 'PLAYER_LIST', list: playerNames });
-        }
-    });
-}
-
-function updatePlayerListUI() {
-    playerListDiv.innerHTML = "";
-    playerNames.forEach(name => {
-        const span = document.createElement('span');
-        span.className = 'player-tag';
-        span.innerText = name;
-        playerListDiv.appendChild(span);
-    });
-}
-
-function handleGlobalBuzzer(name) {
+function handleGlobalBuzzer(name, avatar) {
     if (winnerDeclared) return;
     winnerDeclared = true;
-    showWinnerUI(name);
+    
+    // 1. Mostrar en mi pantalla
+    showWinnerUI(name, avatar);
+    
+    // 2. Avisar a todos
     connections.forEach(conn => {
-        if (conn.open) conn.send({ type: 'WINNER', name: name });
+        if (conn.open) conn.send({ type: 'WINNER', name: name, avatar: avatar });
     });
 }
 
-function showWinnerUI(name) {
+function showWinnerUI(name, avatar) {
     winnerDeclared = true;
     winnerNameSpan.innerText = name;
+    winnerPhotoImg.src = avatar; // Ponemos la foto del ganador
     winnerBanner.classList.remove('hidden');
     btn.disabled = true;
 }
@@ -111,15 +84,14 @@ function resetBuzzerUI() {
     winnerDeclared = false;
     winnerBanner.classList.add('hidden');
     btn.disabled = false;
-    winnerNameSpan.innerText = "---";
 }
 
 btn.onclick = () => {
     if (winnerDeclared) return;
     if (isHost) {
-        handleGlobalBuzzer(myName);
+        handleGlobalBuzzer(myName, myAvatar);
     } else if (connToHost && connToHost.open) {
-        connToHost.send({ type: 'PRESS', name: myName });
+        connToHost.send({ type: 'PRESS', name: myName, avatar: myAvatar });
         btn.disabled = true;
     }
 };
