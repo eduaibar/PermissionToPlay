@@ -1,76 +1,95 @@
 let peer = null;
-let conn = null;
-let connections = [];
+let connToHost = null; // Para jugadores
+let connections = [];  // Para el host
 let isHost = false;
 let winnerDeclared = false;
+let myName = "";
 
-const statusText = document.getElementById('status-text');
-const winnerBox = document.getElementById('winner-box');
+// Elementos
+const btn = document.getElementById('main-buzzer');
+const winnerBanner = document.getElementById('winner-banner');
+const winnerNameSpan = document.getElementById('winner-name');
 
-// Función para el que crea la partida
 function startAsHost() {
+    myName = document.getElementById('player-name').value || "Host";
     isHost = true;
+    // Generar ID de 4 letras aleatorias
     const roomID = Math.random().toString(36).substring(2, 6).toUpperCase();
     peer = new Peer(roomID);
 
     peer.on('open', (id) => {
-        showGame(id);
-        document.getElementById('host-view').classList.remove('hidden');
-        statusText.innerText = "Esperando jugadores...";
+        initGameUI(id);
+        document.getElementById('host-controls').classList.remove('hidden');
     });
 
     peer.on('connection', (c) => {
         connections.push(c);
-        c.on('data', (data) => handleBuzzer(data, c.metadata.name));
-        statusText.innerText = "¡Jugadores listos!";
+        c.on('data', (data) => {
+            if (data.type === 'PRESS') handleGlobalBuzzer(data.name);
+        });
     });
+
+    // El host pulsa su propio botón
+    btn.onclick = () => handleGlobalBuzzer(myName);
 }
 
-// Función para el que se une
 function startAsPlayer() {
+    myName = document.getElementById('player-name').value || "Invitado";
     const roomID = document.getElementById('join-id').value.toUpperCase();
-    const name = prompt("Tu nombre:") || "Anónimo";
-    peer = new Peer();
+    if (!roomID) return alert("Introduce el código de sala");
 
-    peer.on('open', (id) => {
-        conn = peer.connect(roomID, { metadata: { name } });
-        showGame(roomID);
-        document.getElementById('main-buzzer').classList.remove('hidden');
-        
-        conn.on('data', (data) => {
-            if (data === 'reset') {
-                document.getElementById('main-buzzer').disabled = false;
-                statusText.innerText = "¡DALE YA!";
-            }
+    peer = new Peer();
+    peer.on('open', () => {
+        connToHost = peer.connect(roomID);
+        initGameUI(roomID);
+
+        connToHost.on('data', (data) => {
+            if (data.type === 'WINNER') showWinner(data.name);
+            if (data.type === 'RESET') resetBuzzer();
         });
     });
 }
 
-function handleBuzzer(data, name) {
-    if (data === 'press' && !winnerDeclared) {
+function handleGlobalBuzzer(name) {
+    if (!winnerDeclared) {
         winnerDeclared = true;
-        winnerBox.innerText = name;
-        // Avisar a todos los demás que hay ganador
-        connections.forEach(c => c.send('locked'));
+        // 1. Mostrar en mi pantalla (Host)
+        showWinner(name);
+        // 2. Avisar a todos los conectados
+        connections.forEach(c => c.send({ type: 'WINNER', name: name }));
     }
 }
 
-function showGame(id) {
+function showWinner(name) {
+    winnerDeclared = true;
+    winnerNameSpan.innerText = name;
+    winnerBanner.classList.remove('hidden');
+    btn.disabled = true;
+}
+
+function resetBuzzer() {
+    winnerDeclared = false;
+    winnerBanner.classList.add('hidden');
+    btn.disabled = false;
+}
+
+// Botón de pulsar para jugadores
+btn.onclick = () => {
+    if (!isHost && connToHost) {
+        connToHost.send({ type: 'PRESS', name: myName });
+        btn.disabled = true;
+    }
+};
+
+// Botón de reiniciar para el host
+document.getElementById('reset-btn').onclick = () => {
+    resetBuzzer();
+    connections.forEach(c => c.send({ type: 'RESET' }));
+};
+
+function initGameUI(id) {
     document.getElementById('setup-screen').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
     document.getElementById('room-display').innerText = `SALA: ${id}`;
+    document.getElementById('player-display').innerText = `YO: ${myName}`;
 }
-
-// Eventos de botones
-document.getElementById('main-buzzer').onclick = () => {
-    if (conn) {
-        conn.send('press');
-        document.getElementById('main-buzzer').disabled = true;
-    }
-};
-
-document.getElementById('reset-btn').onclick = () => {
-    winnerDeclared = false;
-    winnerBox.innerText = "?";
-    connections.forEach(c => c.send('reset'));
-};
