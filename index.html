@@ -14,7 +14,7 @@
         
         <div class="setup-actions">
             <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
-            <div class="divider">ó</div>
+            <div class="divider">o</div>
             <input type="text" id="join-id" placeholder="Código de Sala">
             <button onclick="startAsPlayer()" class="setup-btn secondary">Unirse</button>
         </div>
@@ -24,6 +24,11 @@
         <div class="header">
             <span id="room-display">SALA: ---</span>
             <span id="player-display">Jugador: ---</span>
+        </div>
+
+        <div id="player-list-container">
+            <small>En la sala:</small>
+            <div id="player-list"></div>
         </div>
 
         <div id="winner-banner" class="hidden">
