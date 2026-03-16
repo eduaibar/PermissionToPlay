@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buzzer P2P - Sin Servidor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div id="setup-screen" class="container">
+        <h1>Buzzer Pro</h1>
+        <button onclick="startAsHost()" class="setup-btn">Crear Sala (Host)</button>
+        <div class="divider">ó</div>
+        <input type="text" id="join-id" placeholder="ID de la sala">
+        <button onclick="startAsPlayer()" class="setup-btn secondary">Unirse</button>
+    </div>
+
+    <div id="game-screen" class="container hidden">
+        <h2 id="room-display">Sala: ---</h2>
+        <div id="status-text">Esperando...</div>
+        
+        <button id="main-buzzer" class="hidden">¡PULSA!</button>
+        
+        <div id="host-view" class="hidden">
+            <div id="winner-box">?</div>
+            <button id="reset-btn">Reiniciar Ronda</button>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
