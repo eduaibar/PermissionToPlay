@@ -1,7 +1,9 @@
 :root {
     --bg-orange: #E67E22; 
     --mauve: #B19CD9;    
+    --mauve-dark: #967BB6;
     --danger: #eb4d4b;
+    --alert-red: #E74C3C; /* Rojo para errores */
     --success: #6ab04c;
     --black: #000000;
     --white: #FFFFFF;
@@ -20,13 +22,13 @@ body {
     overflow: hidden;
 }
 
-/* NOTIFICACIÓN PERSONALIZADA */
+/* NOTIFICACIÓN PERSONALIZADA EN ROJO */
 #custom-alert {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: rgba(0, 0, 0, 0.9);
+    background: var(--alert-red); /* Cambiado a Rojo */
     color: white;
     padding: 12px 25px;
     border-radius: 30px;
@@ -72,7 +74,8 @@ input {
     background: white;
 }
 
-.setup-btn {
+/* Botones Malva (Siguiente, Crear Sala, Unirse) */
+.setup-btn, .join-btn {
     width: 100%;
     padding: 15px;
     border: none;
@@ -82,8 +85,15 @@ input {
     font-weight: bold;
     font-size: 1.1rem;
     cursor: pointer;
-    margin-top: 10px;
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s;
+}
+
+.setup-btn { margin-top: 10px; }
+
+.setup-btn:active, .join-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
 
 .avatar-selector {
@@ -110,19 +120,29 @@ input {
 
 .join-row { display: flex; gap: 10px; margin-top: 20px; }
 .join-row input { margin: 0; flex: 1; }
+
+/* Ajuste específico para el botón unirse en la fila */
 .join-btn {
-    background: var(--success);
-    border: none;
-    color: white;
-    padding: 0 20px;
-    border-radius: 12px;
-    font-weight: bold;
-    cursor: pointer;
+    width: auto;
+    padding: 0 25px;
 }
 
 .header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; }
 #winner-banner { background: var(--success); padding: 20px; border-radius: 20px; margin-bottom: 20px; color: white; border: 4px solid white; }
 #winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 10px; object-fit: cover; }
-#main-buzzer { width: 260px; height: 260px; border-radius: 50%; border: 15px solid rgba(255,255,255,0.4); background: radial-gradient(circle, var(--danger), #c0392b); color: white; font-size: 2.2rem; font-weight: bold; box-shadow: 0 15px 40px rgba(0,0,0,0.3); cursor: pointer; }
+
+#main-buzzer { 
+    width: 260px; 
+    height: 260px; 
+    border-radius: 50%; 
+    border: 15px solid rgba(255,255,255,0.4); 
+    background: radial-gradient(circle, var(--danger), #c0392b); 
+    color: white; 
+    font-size: 2.2rem; 
+    font-weight: bold; 
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3); 
+    cursor: pointer; 
+}
+
 #main-buzzer:disabled { background: #535c68; opacity: 0.6; }
-#reset-btn { background: var(--white); color: var(--black); border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; margin-top: 20px; }
+#reset-btn { background: var(--white); color: var(--black); border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; margin-top: 20px; cursor: pointer; }
