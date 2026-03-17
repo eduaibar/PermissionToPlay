@@ -8,46 +8,58 @@
 </head>
 <body>
 
-    <div id="setup-screen" class="container">
-        <h1>Permission To Game</h1>
+    <h1 id="main-title">Permission To Game</h1>
+
+    <div class="container">
         
-        <input type="text" id="player-name" placeholder="Tu Nombre">
-        
-        <p>Elige tu personaje:</p>
-        <div class="avatar-selector">
-            <img src="imagenes/avatar1.png" class="avatar-option selected" data-img="imagenes/avatar1.png" onclick="selectAvatar(this)">
-            <img src="imagenes/avatar2.png" class="avatar-option" data-img="imagenes/avatar2.png" onclick="selectAvatar(this)">
-            <img src="imagenes/avatar3.png" class="avatar-option" data-img="imagenes/avatar3.png" onclick="selectAvatar(this)">
-            <img src="imagenes/avatar4.png" class="avatar-option" data-img="imagenes/avatar4.png" onclick="selectAvatar(this)">
-        </div>
-        
-        <div class="setup-actions">
-            <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
-            <div class="divider">o</div>
-            <input type="text" id="join-id" placeholder="Código de Sala">
-            <button onclick="startAsPlayer()" class="setup-btn secondary">Unirse</button>
-        </div>
-    </div>
-
-    <div id="game-screen" class="container hidden">
-        <div class="header">
-            <span id="room-display">SALA: ---</span>
-            <span id="player-display">YO: ---</span>
+        <div id="setup-step-1">
+            <input type="text" id="player-name" placeholder="Tu Nombre">
+            <p>Elige tu personaje:</p>
+            <div class="avatar-selector">
+                <img src="imagenes/avatar1.png" class="avatar-option selected" data-img="imagenes/avatar1.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar2.png" class="avatar-option" data-img="imagenes/avatar2.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar3.png" class="avatar-option" data-img="imagenes/avatar3.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar4.png" class="avatar-option" data-img="imagenes/avatar4.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar5.png" class="avatar-option" data-img="imagenes/avatar5.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar6.png" class="avatar-option" data-img="imagenes/avatar6.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar7.png" class="avatar-option" data-img="imagenes/avatar7.png" onclick="selectAvatar(this)">
+                <img src="imagenes/avatar8.png" class="avatar-option" data-img="imagenes/avatar8.png" onclick="selectAvatar(this)">
+            </div>
+            <button onclick="goToStep2()" class="setup-btn">Siguiente</button>
         </div>
 
-        <div id="winner-banner" class="hidden">
-            <img id="winner-photo" src="" alt="Ganador">
-            <p>¡GANADOR!</p>
-            <h2 id="winner-name">---</h2>
+        <div id="setup-step-2" class="hidden">
+            <div class="setup-actions">
+                <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
+                
+                <div class="join-row">
+                    <input type="text" id="join-id" placeholder="Código">
+                    <button id="join-btn-final" onclick="startAsPlayer()" class="join-btn">Unirse</button>
+                </div>
+            </div>
         </div>
 
-        <div class="buzzer-area">
-            <button id="main-buzzer">¡PULSAR!</button>
+        <div id="game-screen" class="hidden">
+            <div class="header">
+                <span id="room-display">SALA: ---</span>
+                <span id="player-display">YO: ---</span>
+            </div>
+
+            <div id="winner-banner" class="hidden">
+                <img id="winner-photo" src="" alt="Ganador">
+                <p>¡GANADOR!</p>
+                <h2 id="winner-name">---</h2>
+            </div>
+
+            <div class="buzzer-area">
+                <button id="main-buzzer">¡PULSAR!</button>
+            </div>
+
+            <div id="host-controls" class="hidden">
+                <button id="reset-btn">Siguiente Ronda</button>
+            </div>
         </div>
 
-        <div id="host-controls" class="hidden">
-            <button id="reset-btn">Siguiente Ronda</button>
-        </div>
     </div>
 
     <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
