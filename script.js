@@ -4,13 +4,23 @@ let connections = [];
 let isHost = false;
 let winnerDeclared = false;
 let myName = "";
-let myAvatar = "imagenes/avatar1.png"; // Actualizado con el nombre de la carpeta
+let myAvatar = "imagenes/avatar1.png"; 
 
 const btn = document.getElementById('main-buzzer');
 const winnerBanner = document.getElementById('winner-banner');
 const winnerNameSpan = document.getElementById('winner-name');
 const winnerPhotoImg = document.getElementById('winner-photo');
 const resetBtn = document.getElementById('reset-btn');
+const mainTitle = document.getElementById('main-title');
+const joinBtnFinal = document.getElementById('join-btn-final');
+
+function goToStep2() {
+    const nameInput = document.getElementById('player-name').value.trim();
+    if (!nameInput) return alert("Por favor, introduce tu nombre");
+    myName = nameInput;
+    document.getElementById('setup-step-1').classList.add('hidden');
+    document.getElementById('setup-step-2').classList.remove('hidden');
+}
 
 function selectAvatar(element) {
     document.querySelectorAll('.avatar-option').forEach(img => img.classList.remove('selected'));
@@ -19,9 +29,7 @@ function selectAvatar(element) {
 }
 
 function startAsHost() {
-    myName = document.getElementById('player-name').value.trim() || "Anfitrión";
     isHost = true;
-    
     const roomID = Math.random().toString(36).substring(2, 6).toUpperCase();
     peer = new Peer(roomID);
 
@@ -38,22 +46,46 @@ function startAsHost() {
             }
         });
     });
+
+    peer.on('error', (err) => alert("Error de sala: " + err.type));
 }
 
 function startAsPlayer() {
-    myName = document.getElementById('player-name').value.trim() || "Jugador";
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
-    
     if (!roomID) return alert("Introduce el código de sala");
 
+    joinBtnFinal.innerText = "Conectando...";
+    joinBtnFinal.disabled = true;
+
     peer = new Peer();
+
+    // Gestión de errores crítica para detectar salas inexistentes
+    peer.on('error', (err) => {
+        joinBtnFinal.innerText = "Unirse";
+        joinBtnFinal.disabled = false;
+        if (err.type === 'peer-not-found') {
+            alert("La sala " + roomID + " no existe. Verifica el código.");
+        } else {
+            alert("Error de conexión: " + err.type);
+        }
+    });
+
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-        initGameUI(roomID);
+
+        // SOLO inicializar la UI si la conexión se abre realmente
+        connToHost.on('open', () => {
+            initGameUI(roomID);
+        });
 
         connToHost.on('data', (data) => {
             if (data.type === 'WINNER') showWinnerUI(data.name, data.avatar);
             if (data.type === 'RESET') resetBuzzerUI();
+        });
+
+        connToHost.on('close', () => {
+            alert("Conexión perdida con el anfitrión.");
+            location.reload();
         });
     });
 }
@@ -61,9 +93,7 @@ function startAsPlayer() {
 function handleGlobalBuzzer(name, avatar) {
     if (winnerDeclared) return;
     winnerDeclared = true;
-    
     showWinnerUI(name, avatar);
-    
     connections.forEach(conn => {
         if (conn.open) conn.send({ type: 'WINNER', name: name, avatar: avatar });
     });
@@ -101,8 +131,9 @@ resetBtn.onclick = () => {
 };
 
 function initGameUI(id) {
-    document.getElementById('setup-screen').classList.add('hidden');
+    document.getElementById('setup-step-2').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
+    mainTitle.classList.add('hidden');
     document.getElementById('room-display').innerText = `SALA: ${id}`;
     document.getElementById('player-display').innerText = `YO: ${myName}`;
 }
