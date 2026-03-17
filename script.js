@@ -29,8 +29,12 @@ function goToStep2() {
     const nameInput = document.getElementById('player-name').value.trim();
     if (!nameInput) return showToast("Por favor, introduce tu nombre");
     myName = nameInput;
+    
     document.getElementById('setup-step-1').classList.add('hidden');
     document.getElementById('setup-step-2').classList.remove('hidden');
+    
+    // CAMBIO DE FONDO A SALA
+    document.body.className = 'bg-step2';
 }
 
 function selectAvatar(element) {
@@ -68,18 +72,19 @@ function startAsPlayer() {
     joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
+    // Si ya existía un peer de un intento fallido, lo destruimos
+    if (peer) peer.destroy();
+    
     peer = new Peer();
 
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
         
-        // MAPEADO DE ERRORES CORREGIDO
-        if (err.type === 'peer-not-found') {
-            showToast("Código Incorrecto"); // CORREGIDO: Ahora sale esto
+        // Detectar si la sala no existe
+        if (err.type === 'peer-not-found' || err.type === 'peer-unavailable') {
+            showToast("Código Incorrecto");
         } else {
-            // Puedes añadir otros mapeos aquí si quieres, por ejemplo:
-            // if (err.type === 'peer-unavailable') { showToast("Sala ocupada"); }
             showToast("Error de conexión");
         }
     });
@@ -147,6 +152,10 @@ function initGameUI(id) {
     document.getElementById('setup-step-2').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
     mainTitle.classList.add('hidden');
+    
+    // CAMBIO DE FONDO A PULSADOR
+    document.body.className = 'bg-game';
+    
     document.getElementById('room-display').innerText = `SALA: ${id}`;
     document.getElementById('player-display').innerText = `YO: ${myName}`;
 }
