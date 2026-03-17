@@ -145,4 +145,21 @@ input {
 }
 
 #main-buzzer:disabled { background: #535c68; opacity: 0.6; }
-#reset-btn { background: var(--white); color: var(--black); border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; margin-top: 20px; cursor: pointer; }
+
+/* Botón Siguiente Ronda (Malva) */
+#reset-btn {
+    background: var(--mauve); /* CORREGIDO: AHORA ES MALVA */
+    color: var(--white); /* Texto en blanco para contraste */
+    border: none;
+    padding: 12px 25px;
+    border-radius: 25px;
+    font-weight: bold;
+    margin-top: 20px;
+    cursor: pointer;
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1); /* Añadida sombra para consistencia */
+}
+
+#reset-btn:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
+}
