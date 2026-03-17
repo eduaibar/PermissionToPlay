@@ -3,9 +3,10 @@
     --bg-purple: #3B1F50; 
     --bg-bordeaux: #4A0404; 
     --mauve: #B19CD9;    
+    --mauve-dark: #967BB6;
+    --danger: #eb4d4b;
     --alert-red: #E74C3C; 
     --success: #6ab04c;
-    --danger: #eb4d4b;
     --black: #000000;
     --white: #FFFFFF;
 }
@@ -16,12 +17,12 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* Para que el fondo cubra siempre el alto */
+    min-height: 100vh;
     width: 100vw;
     overflow-x: hidden;
-    overflow-y: auto; /* AHORA PERMITE HACER SCROLL */
+    overflow-y: auto; 
     transition: background 0.4s ease;
-    padding: 20px 0;
+    padding: 10px 0; /* Reducido el padding superior/inferior */
     box-sizing: border-box;
 }
 
@@ -32,91 +33,122 @@ body {
 .container { text-align: center; width: 95%; max-width: 450px; }
 .hidden { display: none !important; }
 
-/* Imágenes Superiores */
-.top-banner, .top-banner-game {
+/* Imágenes Superiores - TAMAÑO REDUCIDO */
+.top-banner {
     width: 100%;
-    max-width: 350px;
+    max-width: 300px; /* Reducido de 350px */
     height: auto;
     border-radius: 15px;
-    margin: 0 auto 20px auto;
+    margin: 0 auto 15px auto; /* Reducido el margen inferior */
+    display: block;
+}
+
+.top-banner-game {
+    width: 100%;
+    max-width: 250px; /* Reducido significativamente de 350px */
+    height: auto;
+    border-radius: 10px;
+    margin: 0 auto 10px auto; /* Reducido el margen inferior */
     display: block;
 }
 
 /* Alerta Roja */
 #custom-alert {
     position: fixed;
-    top: 20px;
+    top: 10px; /* Movido un poco más arriba */
     left: 50%;
     transform: translateX(-50%);
     background: var(--alert-red);
     color: white;
-    padding: 12px 25px;
+    padding: 10px 20px; /* Reducido el padding */
     border-radius: 30px;
-    font-size: 0.9rem;
+    font-size: 0.85rem; /* Fuente ligeramente más pequeña */
     font-weight: bold;
     z-index: 9999;
 }
 .alert-hidden { top: -100px !important; opacity: 0; }
 
-#main-title { margin-bottom: 20px; font-size: 1.8rem; text-transform: uppercase; font-weight: 800; }
+#main-title { 
+    margin-top: 10px; /* Añadido margen superior */
+    margin-bottom: 15px; /* Reducido de 20px */
+    font-size: 1.6rem; /* Fuente ligeramente más pequeña de 1.8rem */
+    text-transform: uppercase; 
+    font-weight: 800; 
+}
 
 input {
     width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 12px;
+    padding: 12px; /* Reducido de 15px */
+    margin: 8px 0; /* Reducido de 10px */
+    border-radius: 10px; /* Reducido de 12px */
     border: none;
     box-sizing: border-box;
-    font-size: 1rem;
+    font-size: 0.95rem; /* Fuente ligeramente más pequeña */
 }
 
 /* Botones Malva */
 .setup-btn, .join-btn, #reset-btn {
     width: 100%;
-    padding: 15px;
+    padding: 12px; /* Reducido de 15px */
     border: none;
-    border-radius: 12px;
+    border-radius: 10px; /* Reducido de 12px */
     background-color: var(--mauve);
     color: var(--white);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem; /* Fuente ligeramente más pequeña de 1.1rem */
     cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.2);
+    box-shadow: 0 3px 0 rgba(0,0,0,0.2); /* Sombra más pequeña */
 }
 
-.join-row { display: flex; gap: 10px; margin-top: 20px; }
+.join-row { display: flex; gap: 8px; margin-top: 15px; }
 .join-row input { margin: 0; flex: 1; }
-.join-btn { width: auto; padding: 0 25px; }
+.join-btn { width: auto; padding: 0 20px; }
 
 .avatar-selector {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 20px;
+    gap: 6px; /* Reducido de 8px */
+    margin-bottom: 15px; /* Reducido de 20px */
 }
-.avatar-option { width: 100%; aspect-ratio: 1/1; border-radius: 50%; border: 3px solid white; cursor: pointer; object-fit: cover; }
-.avatar-option.selected { border-color: var(--mauve); transform: scale(1.1); }
+.avatar-option { width: 100%; aspect-ratio: 1/1; border-radius: 50%; border: 2px solid white; /* Borde más fino */ cursor: pointer; object-fit: cover; }
+.avatar-option.selected { border-color: var(--mauve); transform: scale(1.05); /* Escala menor de 1.1 */ }
 
 /* Cabecera Juego */
-.header { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; }
+.header { display: flex; justify-content: space-between; font-size: 0.85rem; /* Fuente ligeramente más pequeña de 0.9rem */ font-weight: bold; margin-bottom: 8px; /* Reducido de 10px */ }
 
-/* El Pulsador Original */
+/* El Pulsador Original - TAMAÑO REDUCIDO */
 #main-buzzer { 
-    width: 260px; 
-    height: 260px; 
+    width: 220px; /* Reducido de 260px */
+    height: 220px; /* Reducido de 260px */
     border-radius: 50%; 
-    border: 15px solid rgba(255,255,255,0.3); 
+    border: 12px solid rgba(255,255,255,0.3); /* Borde más fino de 15px */
     background: radial-gradient(circle, var(--danger), #c0392b); 
     color: white; 
-    font-size: 2.2rem; 
+    font-size: 1.8rem; /* Fuente más pequeña de 2.2rem */
     font-weight: bold; 
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.4); /* Sombra más pequeña de 15px/40px */
     cursor: pointer; 
 }
 
 #main-buzzer:disabled { background: #535c68; opacity: 0.6; box-shadow: none; transform: none; }
 
-#winner-banner { background: var(--success); padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 4px solid white; }
-#winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 5px; object-fit: cover; }
+/* CUADRO DE GANADOR REDUCIDO */
+#winner-banner { 
+    background: var(--success); 
+    padding: 12px; /* Reducido de 15px */
+    border-radius: 15px; /* Reducido de 20px */
+    margin-bottom: 12px; /* Reducido de 15px */
+    border: 3px solid white; /* Borde más fino de 4px */
+}
+#winner-banner p { margin: 0 0 5px 0; font-size: 0.9rem; } /* Ajustes de margen y fuente */
+#winner-banner h2 { margin: 0; font-size: 1.3rem; } /* Ajustes de margen y fuente */
+#winner-photo { 
+    width: 80px; /* Reducido de 100px */
+    height: 80px; /* Reducido de 100px */
+    border-radius: 50%; 
+    border: 3px solid white; /* Borde más fino de 4px */
+    margin-bottom: 3px; /* Reducido de 5px */
+    object-fit: cover; 
+}
 
-#reset-btn { width: auto; padding: 12px 30px; border-radius: 25px; margin-top: 15px; }
+#reset-btn { width: auto; padding: 10px 25px; border-radius: 20px; /* Reducido de 25px */ margin-top: 12px; /* Reducido de 15px */ }
