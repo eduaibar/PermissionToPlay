@@ -51,26 +51,25 @@ function startAsHost() {
             if (data.type === 'PRESS' && !winnerDeclared) handleGlobalBuzzer(data.name, data.avatar);
         });
     });
-    peer.on('error', () => showToast("Código de Sala ya en uso"));
+    peer.on('error', () => showToast("Código de Sala en uso"));
 }
 
 function startAsPlayer() {
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
     if (!roomID) return showToast("Introduce el código de sala");
-    
+
     joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
     if (peer) peer.destroy();
     peer = new Peer();
 
-    // Lógica de detección de error corregida
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
         
-        // Si el error es que el 'peer' al que conectamos no existe
-        if (err.type === 'peer-not-found' || err.type === 'peer-unavailable' || err.type === 'invalid-id') {
+        // Evitamos que salga doble capturando solo una vez el fallo
+        if (err.type === 'peer-not-found' || err.type === 'peer-unavailable') {
             showToast("Código Incorrecto");
         } else {
             showToast("Error de conexión");
@@ -79,18 +78,8 @@ function startAsPlayer() {
 
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-        
-        // Timeout de seguridad: si en 5 segundos no conecta, es que el código no existe
-        const connectionTimeout = setTimeout(() => {
-            if (!connToHost.open) {
-                showToast("Código Incorrecto");
-                joinBtnFinal.innerText = "Unirse";
-                joinBtnFinal.disabled = false;
-            }
-        }, 5000);
 
         connToHost.on('open', () => {
-            clearTimeout(connectionTimeout);
             initGameUI(roomID);
         });
 
@@ -113,13 +102,13 @@ function showWinnerUI(name, avatar) {
     winnerNameSpan.innerText = name;
     winnerPhotoImg.src = avatar; 
     winnerBanner.classList.remove('hidden');
-    btn.disabled = true; // Aquí el CSS lo volverá GRIS
+    btn.disabled = true;
 }
 
 function resetBuzzerUI() {
     winnerDeclared = false;
     winnerBanner.classList.add('hidden');
-    btn.disabled = false; // Aquí el CSS lo volverá ROJO VIBRANTE
+    btn.disabled = false;
 }
 
 btn.onclick = () => {
