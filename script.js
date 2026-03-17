@@ -14,7 +14,6 @@ const resetBtn = document.getElementById('reset-btn');
 const mainTitle = document.getElementById('main-title');
 const joinBtnFinal = document.getElementById('join-btn-final');
 
-// FUNCIÓN PARA MOSTRAR ERRORES SIN DOMINIO
 function showToast(message) {
     const toast = document.getElementById('custom-alert');
     const msg = document.getElementById('alert-message');
@@ -66,7 +65,7 @@ function startAsPlayer() {
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
     if (!roomID) return showToast("Introduce el código de sala");
 
-    joinBtnFinal.innerText = "Conectando...";
+    joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
     peer = new Peer();
@@ -75,11 +74,8 @@ function startAsPlayer() {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
         
-        // MAPEADO DE ERRORES SEGÚN TU PETICIÓN
         if (err.type === 'peer-not-found') {
-            showToast("Código de sala incorrecto");
-        } else if (err.type === 'unavailable-id') {
-            showToast("Esta sala ya existe o está ocupada");
+            showToast("Código Incorrecto"); // Mensaje solicitado
         } else {
             showToast("Error de conexión");
         }
@@ -98,7 +94,7 @@ function startAsPlayer() {
         });
 
         connToHost.on('close', () => {
-            showToast("Conexión perdida con el anfitrión");
+            showToast("Conexión perdida");
             setTimeout(() => location.reload(), 2000);
         });
     });
