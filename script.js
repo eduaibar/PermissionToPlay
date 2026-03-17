@@ -14,9 +14,21 @@ const resetBtn = document.getElementById('reset-btn');
 const mainTitle = document.getElementById('main-title');
 const joinBtnFinal = document.getElementById('join-btn-final');
 
+// FUNCIÓN PARA MOSTRAR ERRORES SIN DOMINIO
+function showToast(message) {
+    const toast = document.getElementById('custom-alert');
+    const msg = document.getElementById('alert-message');
+    msg.innerText = message;
+    toast.classList.remove('alert-hidden');
+    
+    setTimeout(() => {
+        toast.classList.add('alert-hidden');
+    }, 3000);
+}
+
 function goToStep2() {
     const nameInput = document.getElementById('player-name').value.trim();
-    if (!nameInput) return alert("Por favor, introduce tu nombre");
+    if (!nameInput) return showToast("Por favor, introduce tu nombre");
     myName = nameInput;
     document.getElementById('setup-step-1').classList.add('hidden');
     document.getElementById('setup-step-2').classList.remove('hidden');
@@ -47,12 +59,12 @@ function startAsHost() {
         });
     });
 
-    peer.on('error', (err) => alert("Error de sala: " + err.type));
+    peer.on('error', (err) => showToast("Error al crear sala"));
 }
 
 function startAsPlayer() {
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
-    if (!roomID) return alert("Introduce el código de sala");
+    if (!roomID) return showToast("Introduce el código de sala");
 
     joinBtnFinal.innerText = "Conectando...";
     joinBtnFinal.disabled = true;
@@ -62,10 +74,14 @@ function startAsPlayer() {
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
+        
+        // MAPEADO DE ERRORES SEGÚN TU PETICIÓN
         if (err.type === 'peer-not-found') {
-            alert("La sala " + roomID + " no existe. Verifica el código.");
+            showToast("Código de sala incorrecto");
+        } else if (err.type === 'unavailable-id') {
+            showToast("Esta sala ya existe o está ocupada");
         } else {
-            alert("Error de conexión: " + err.type);
+            showToast("Error de conexión");
         }
     });
 
@@ -82,8 +98,8 @@ function startAsPlayer() {
         });
 
         connToHost.on('close', () => {
-            alert("Conexión perdida con el anfitrión.");
-            location.reload();
+            showToast("Conexión perdida con el anfitrión");
+            setTimeout(() => location.reload(), 2000);
         });
     });
 }
