@@ -1,7 +1,6 @@
 :root {
-    --bg-orange: #E67E22; /* Naranja intenso, como la fruta, oscuro y vibrante */
-    --mauve: #B19CD9;    /* Malva para botones */
-    --mauve-hover: #967BB6;
+    --bg-orange: #E67E22; 
+    --mauve: #B19CD9;    
     --danger: #eb4d4b;
     --success: #6ab04c;
     --black: #000000;
@@ -21,20 +20,35 @@ body {
     overflow: hidden;
 }
 
+/* NOTIFICACIÓN PERSONALIZADA */
+#custom-alert {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 0, 0, 0.9);
+    color: white;
+    padding: 12px 25px;
+    border-radius: 30px;
+    font-size: 0.9rem;
+    font-weight: bold;
+    z-index: 9999;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    pointer-events: none;
+}
+
+.alert-hidden {
+    top: -100px !important;
+    opacity: 0;
+}
+
 #main-title {
     margin-bottom: 20px;
     font-size: 1.8rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--black);
     font-weight: 800;
-}
-
-.section-label {
-    color: var(--black);
-    font-weight: bold;
-    margin-top: 15px;
-    margin-bottom: 10px;
 }
 
 .container {
@@ -45,7 +59,8 @@ body {
 
 .hidden { display: none !important; }
 
-/* Inputs */
+.section-label { font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
+
 input {
     width: 100%;
     padding: 15px;
@@ -57,7 +72,6 @@ input {
     background: white;
 }
 
-/* Botones Principales (Malva) */
 .setup-btn {
     width: 100%;
     padding: 15px;
@@ -70,15 +84,8 @@ input {
     cursor: pointer;
     margin-top: 10px;
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-    transition: all 0.2s;
 }
 
-.setup-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
-}
-
-/* Selector de 15 avatares: 3 filas de 5 */
 .avatar-selector {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -94,27 +101,15 @@ input {
     cursor: pointer;
     object-fit: cover;
     background: rgba(255,255,255,0.3);
-    transition: 0.2s;
 }
 
 .avatar-option.selected {
     border-color: var(--mauve);
     transform: scale(1.1);
-    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
-/* Fila de Unirse (WhatsApp Style) */
-.join-row {
-    display: flex;
-    gap: 10px;
-    margin-top: 20px;
-}
-
-.join-row input {
-    margin: 0;
-    flex: 1;
-}
-
+.join-row { display: flex; gap: 10px; margin-top: 20px; }
+.join-row input { margin: 0; flex: 1; }
 .join-btn {
     background: var(--success);
     border: none;
@@ -125,56 +120,9 @@ input {
     cursor: pointer;
 }
 
-/* Juego */
-.header {
-    display: flex;
-    justify-content: space-between;
-    font-size: 0.8rem;
-    font-weight: bold;
-    opacity: 0.9;
-    margin-bottom: 20px;
-}
-
-#winner-banner {
-    background: var(--success);
-    padding: 20px;
-    border-radius: 20px;
-    margin-bottom: 20px;
-    color: white;
-    border: 4px solid white;
-}
-
-#winner-photo {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    border: 4px solid white;
-    margin-bottom: 10px;
-    object-fit: cover;
-}
-
-#main-buzzer {
-    width: 260px;
-    height: 260px;
-    border-radius: 50%;
-    border: 15px solid rgba(255,255,255,0.4);
-    background: radial-gradient(circle, var(--danger), #c0392b);
-    color: white;
-    font-size: 2.2rem;
-    font-weight: bold;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
-    cursor: pointer;
-}
-
+.header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; }
+#winner-banner { background: var(--success); padding: 20px; border-radius: 20px; margin-bottom: 20px; color: white; border: 4px solid white; }
+#winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 10px; object-fit: cover; }
+#main-buzzer { width: 260px; height: 260px; border-radius: 50%; border: 15px solid rgba(255,255,255,0.4); background: radial-gradient(circle, var(--danger), #c0392b); color: white; font-size: 2.2rem; font-weight: bold; box-shadow: 0 15px 40px rgba(0,0,0,0.3); cursor: pointer; }
 #main-buzzer:disabled { background: #535c68; opacity: 0.6; }
-
-#reset-btn {
-    background: var(--white);
-    color: var(--black);
-    border: none;
-    padding: 12px 25px;
-    border-radius: 25px;
-    font-weight: bold;
-    margin-top: 20px;
-    cursor: pointer;
-}
+#reset-btn { background: var(--white); color: var(--black); border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; margin-top: 20px; }
