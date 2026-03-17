@@ -1,10 +1,12 @@
 :root {
     --bg-orange: #E67E22; 
-    --bg-purple: #3B1F50;  /* Morado oscuro tirando a morado */
-    --bg-bordeaux: #4A0404; /* Burdeos oscuro */
+    --bg-purple: #3B1F50; 
+    --bg-bordeaux: #4A0404; 
     --mauve: #B19CD9;    
     --alert-red: #E74C3C; 
     --success: #6ab04c;
+    --bright-red: #FF4D4D; /* Rojo más clarito y vibrante */
+    --gray-disabled: #7f8c8d; /* Gris para cuando se pulsa */
     --black: #000000;
     --white: #FFFFFF;
 }
@@ -14,41 +16,40 @@ body {
     font-family: 'Segoe UI', sans-serif;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh; /* Permite scroll si es necesario */
     width: 100vw;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto; /* Habilitar subir/bajar */
     transition: background 0.4s ease;
+    padding: 20px 0; /* Espacio extra para que no pegue al borde */
+    box-sizing: border-box;
 }
 
-/* Clases de Fondo Dinámicas */
+/* Fondos */
 .bg-step1 { background-color: var(--bg-orange); color: var(--black); }
 .bg-step2 { background-color: var(--bg-purple); color: var(--white); }
 .bg-game  { background-color: var(--bg-bordeaux); color: var(--white); }
 
-/* Imágenes en la parte superior */
-.top-banner {
-    width: 100%;
-    max-width: 350px;
-    height: auto;
-    border-radius: 15px;
-    margin-bottom: 20px;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
+.container { 
+    text-align: center; 
+    width: 95%; 
+    max-width: 450px; 
 }
 
-.top-banner-game {
+.hidden { display: none !important; }
+
+/* Imágenes superiores escaladas para móvil */
+.top-banner, .top-banner-game {
     width: 100%;
-    max-width: 320px;
+    max-width: 280px; /* Reducido un poco para ganar espacio */
     height: auto;
     border-radius: 10px;
-    margin: 10px auto 20px auto;
+    margin: 0 auto 15px auto;
     display: block;
 }
 
-/* Alerta personalizada */
+/* Alerta Roja */
 #custom-alert {
     position: fixed;
     top: 20px;
@@ -64,77 +65,52 @@ body {
 }
 .alert-hidden { top: -100px !important; opacity: 0; }
 
-#main-title {
-    margin-bottom: 15px;
-    font-size: 1.8rem;
-    text-transform: uppercase;
-    font-weight: 800;
-}
-
-.container { text-align: center; width: 95%; max-width: 450px; }
-.hidden { display: none !important; }
-
-/* Inputs y Botones Malva */
-input {
-    width: 100%;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 12px;
-    border: none;
-    box-sizing: border-box;
-    font-size: 1rem;
-}
-
+/* Botones Malva */
 .setup-btn, .join-btn, #reset-btn {
     width: 100%;
-    padding: 15px;
+    padding: 14px;
     border: none;
     border-radius: 12px;
     background-color: var(--mauve);
     color: var(--white);
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
     cursor: pointer;
     box-shadow: 0 4px 0 rgba(0,0,0,0.2);
 }
 
-.avatar-selector {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
-    margin-bottom: 15px;
-}
+.join-row { display: flex; gap: 8px; margin-top: 15px; }
+.join-row input { margin: 0; flex: 1; padding: 12px; border-radius: 10px; border: none; }
+.join-btn { width: auto; padding: 0 20px; }
 
-.avatar-option { width: 100%; aspect-ratio: 1/1; border-radius: 50%; border: 3px solid white; cursor: pointer; object-fit: cover; }
-.avatar-option.selected { border-color: var(--mauve); transform: scale(1.1); }
-
-.join-row { display: flex; gap: 10px; margin-top: 20px; }
-.join-row input { margin: 0; flex: 1; }
-.join-btn { width: auto; padding: 0 25px; }
-
-/* Cabecera de Juego */
-.header { 
-    display: flex; 
-    justify-content: space-between; 
-    font-size: 0.9rem; 
-    font-weight: bold; 
-    margin-bottom: 10px;
-}
-
-#winner-banner { background: var(--success); padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 4px solid white; }
-#winner-photo { width: 90px; height: 90px; border-radius: 50%; border: 3px solid white; margin-bottom: 5px; object-fit: cover; }
-
+/* El Pulsador Mejorado */
 #main-buzzer { 
-    width: 250px; 
-    height: 250px; 
+    width: 220px; /* Tamaño reducido para que entre en pantalla */
+    height: 220px; 
     border-radius: 50%; 
-    border: 12px solid rgba(255,255,255,0.3); 
-    background: radial-gradient(circle, var(--danger), #c0392b); 
+    border: 10px solid rgba(255,255,255,0.3); 
+    background: radial-gradient(circle, var(--bright-red), #d63031); 
     color: white; 
-    font-size: 2rem; 
+    font-size: 1.8rem; 
     font-weight: bold; 
-    box-shadow: 0 12px 30px rgba(0,0,0,0.4);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
     cursor: pointer;
+    transition: all 0.2s;
+    margin: 10px auto;
 }
 
-#reset-btn { width: auto; padding: 10px 30px; border-radius: 25px; margin-top: 15px; }
+#main-buzzer:active { transform: translateY(5px); box-shadow: 0 5px 10px rgba(0,0,0,0.4); }
+
+/* Efecto Gris al Desactivarse */
+#main-buzzer:disabled { 
+    background: var(--gray-disabled) !important; 
+    border-color: rgba(255,255,255,0.1);
+    box-shadow: none;
+    opacity: 0.8;
+    transform: none;
+}
+
+#winner-banner { background: var(--success); padding: 10px; border-radius: 15px; margin-bottom: 15px; border: 3px solid white; }
+#winner-photo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
+
+#reset-btn { width: auto; padding: 10px 30px; border-radius: 25px; margin-top: 10px; }
