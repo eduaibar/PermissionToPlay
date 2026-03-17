@@ -5,8 +5,7 @@
     --mauve: #B19CD9;    
     --alert-red: #E74C3C; 
     --success: #6ab04c;
-    --bright-red: #FF4D4D; /* Rojo más clarito y vibrante */
-    --gray-disabled: #7f8c8d; /* Gris para cuando se pulsa */
+    --danger: #eb4d4b;
     --black: #000000;
     --white: #FFFFFF;
 }
@@ -17,35 +16,29 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
-    min-height: 100vh; /* Permite scroll si es necesario */
+    min-height: 100vh; /* Para que el fondo cubra siempre el alto */
     width: 100vw;
     overflow-x: hidden;
-    overflow-y: auto; /* Habilitar subir/bajar */
+    overflow-y: auto; /* AHORA PERMITE HACER SCROLL */
     transition: background 0.4s ease;
-    padding: 20px 0; /* Espacio extra para que no pegue al borde */
+    padding: 20px 0;
     box-sizing: border-box;
 }
 
-/* Fondos */
 .bg-step1 { background-color: var(--bg-orange); color: var(--black); }
 .bg-step2 { background-color: var(--bg-purple); color: var(--white); }
 .bg-game  { background-color: var(--bg-bordeaux); color: var(--white); }
 
-.container { 
-    text-align: center; 
-    width: 95%; 
-    max-width: 450px; 
-}
-
+.container { text-align: center; width: 95%; max-width: 450px; }
 .hidden { display: none !important; }
 
-/* Imágenes superiores escaladas para móvil */
+/* Imágenes Superiores */
 .top-banner, .top-banner-game {
     width: 100%;
-    max-width: 280px; /* Reducido un poco para ganar espacio */
+    max-width: 350px;
     height: auto;
-    border-radius: 10px;
-    margin: 0 auto 15px auto;
+    border-radius: 15px;
+    margin: 0 auto 20px auto;
     display: block;
 }
 
@@ -65,52 +58,65 @@ body {
 }
 .alert-hidden { top: -100px !important; opacity: 0; }
 
+#main-title { margin-bottom: 20px; font-size: 1.8rem; text-transform: uppercase; font-weight: 800; }
+
+input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 12px;
+    border: none;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
 /* Botones Malva */
 .setup-btn, .join-btn, #reset-btn {
     width: 100%;
-    padding: 14px;
+    padding: 15px;
     border: none;
     border-radius: 12px;
     background-color: var(--mauve);
     color: var(--white);
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 1.1rem;
     cursor: pointer;
     box-shadow: 0 4px 0 rgba(0,0,0,0.2);
 }
 
-.join-row { display: flex; gap: 8px; margin-top: 15px; }
-.join-row input { margin: 0; flex: 1; padding: 12px; border-radius: 10px; border: none; }
-.join-btn { width: auto; padding: 0 20px; }
+.join-row { display: flex; gap: 10px; margin-top: 20px; }
+.join-row input { margin: 0; flex: 1; }
+.join-btn { width: auto; padding: 0 25px; }
 
-/* El Pulsador Mejorado */
+.avatar-selector {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 8px;
+    margin-bottom: 20px;
+}
+.avatar-option { width: 100%; aspect-ratio: 1/1; border-radius: 50%; border: 3px solid white; cursor: pointer; object-fit: cover; }
+.avatar-option.selected { border-color: var(--mauve); transform: scale(1.1); }
+
+/* Cabecera Juego */
+.header { display: flex; justify-content: space-between; font-size: 0.9rem; font-weight: bold; margin-bottom: 10px; }
+
+/* El Pulsador Original */
 #main-buzzer { 
-    width: 220px; /* Tamaño reducido para que entre en pantalla */
-    height: 220px; 
+    width: 260px; 
+    height: 260px; 
     border-radius: 50%; 
-    border: 10px solid rgba(255,255,255,0.3); 
-    background: radial-gradient(circle, var(--bright-red), #d63031); 
+    border: 15px solid rgba(255,255,255,0.3); 
+    background: radial-gradient(circle, var(--danger), #c0392b); 
     color: white; 
-    font-size: 1.8rem; 
+    font-size: 2.2rem; 
     font-weight: bold; 
-    box-shadow: 0 10px 25px rgba(0,0,0,0.4);
-    cursor: pointer;
-    transition: all 0.2s;
-    margin: 10px auto;
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4); 
+    cursor: pointer; 
 }
 
-#main-buzzer:active { transform: translateY(5px); box-shadow: 0 5px 10px rgba(0,0,0,0.4); }
+#main-buzzer:disabled { background: #535c68; opacity: 0.6; box-shadow: none; transform: none; }
 
-/* Efecto Gris al Desactivarse */
-#main-buzzer:disabled { 
-    background: var(--gray-disabled) !important; 
-    border-color: rgba(255,255,255,0.1);
-    box-shadow: none;
-    opacity: 0.8;
-    transform: none;
-}
+#winner-banner { background: var(--success); padding: 15px; border-radius: 20px; margin-bottom: 15px; border: 4px solid white; }
+#winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 5px; object-fit: cover; }
 
-#winner-banner { background: var(--success); padding: 10px; border-radius: 15px; margin-bottom: 15px; border: 3px solid white; }
-#winner-photo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid white; object-fit: cover; }
-
-#reset-btn { width: auto; padding: 10px 30px; border-radius: 25px; margin-top: 10px; }
+#reset-btn { width: auto; padding: 12px 30px; border-radius: 25px; margin-top: 15px; }
