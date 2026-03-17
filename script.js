@@ -28,7 +28,6 @@ function goToStep2() {
     myName = nameInput;
     document.getElementById('setup-step-1').classList.add('hidden');
     document.getElementById('setup-step-2').classList.remove('hidden');
-    // CAMBIO A MORADO
     document.body.className = 'bg-step2';
 }
 
@@ -52,27 +51,49 @@ function startAsHost() {
             if (data.type === 'PRESS' && !winnerDeclared) handleGlobalBuzzer(data.name, data.avatar);
         });
     });
-    peer.on('error', () => showToast("Error al crear sala"));
+    peer.on('error', () => showToast("Código de Sala ya en uso"));
 }
 
 function startAsPlayer() {
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
     if (!roomID) return showToast("Introduce el código de sala");
+    
     joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
     if (peer) peer.destroy();
     peer = new Peer();
+
+    // Lógica de detección de error corregida
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
-        if (err.type === 'peer-not-found') showToast("Código Incorrecto");
-        else showToast("Error de conexión");
+        
+        // Si el error es que el 'peer' al que conectamos no existe
+        if (err.type === 'peer-not-found' || err.type === 'peer-unavailable' || err.type === 'invalid-id') {
+            showToast("Código Incorrecto");
+        } else {
+            showToast("Error de conexión");
+        }
     });
 
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-        connToHost.on('open', () => initGameUI(roomID));
+        
+        // Timeout de seguridad: si en 5 segundos no conecta, es que el código no existe
+        const connectionTimeout = setTimeout(() => {
+            if (!connToHost.open) {
+                showToast("Código Incorrecto");
+                joinBtnFinal.innerText = "Unirse";
+                joinBtnFinal.disabled = false;
+            }
+        }, 5000);
+
+        connToHost.on('open', () => {
+            clearTimeout(connectionTimeout);
+            initGameUI(roomID);
+        });
+
         connToHost.on('data', (data) => {
             if (data.type === 'WINNER') showWinnerUI(data.name, data.avatar);
             if (data.type === 'RESET') resetBuzzerUI();
@@ -92,13 +113,13 @@ function showWinnerUI(name, avatar) {
     winnerNameSpan.innerText = name;
     winnerPhotoImg.src = avatar; 
     winnerBanner.classList.remove('hidden');
-    btn.disabled = true;
+    btn.disabled = true; // Aquí el CSS lo volverá GRIS
 }
 
 function resetBuzzerUI() {
     winnerDeclared = false;
     winnerBanner.classList.add('hidden');
-    btn.disabled = false;
+    btn.disabled = false; // Aquí el CSS lo volverá ROJO VIBRANTE
 }
 
 btn.onclick = () => {
@@ -119,7 +140,6 @@ function initGameUI(id) {
     document.getElementById('setup-step-2').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
     mainTitle.classList.add('hidden');
-    // CAMBIO A BURDEOS
     document.body.className = 'bg-game';
     document.getElementById('room-display').innerText = `SALA: ${id}`;
     document.getElementById('player-display').innerText = `YO: ${myName}`;
