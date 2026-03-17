@@ -74,9 +74,12 @@ function startAsPlayer() {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
         
+        // MAPEADO DE ERRORES CORREGIDO
         if (err.type === 'peer-not-found') {
-            showToast("Código Incorrecto"); // Mensaje solicitado
+            showToast("Código Incorrecto"); // CORREGIDO: Ahora sale esto
         } else {
+            // Puedes añadir otros mapeos aquí si quieres, por ejemplo:
+            // if (err.type === 'peer-unavailable') { showToast("Sala ocupada"); }
             showToast("Error de conexión");
         }
     });
