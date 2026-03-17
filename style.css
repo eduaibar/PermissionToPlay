@@ -3,32 +3,41 @@
     --mauve: #B19CD9;    
     --mauve-dark: #967BB6;
     --danger: #eb4d4b;
-    --alert-red: #E74C3C; /* Rojo para errores */
+    --alert-red: #E74C3C; 
     --success: #6ab04c;
     --black: #000000;
     --white: #FFFFFF;
 }
 
+/* GESTIÓN DE FONDOS */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
-    background-color: var(--bg-orange);
     color: var(--black);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    width: 100vw;
     overflow: hidden;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    transition: background 0.5s ease-in-out;
 }
 
-/* NOTIFICACIÓN PERSONALIZADA EN ROJO */
+.bg-step1 { background-color: var(--bg-orange); background-image: none; }
+.bg-step2 { background-image: url('imagenes/fondo_sala.png'); }
+.bg-game  { background-image: url('imagenes/fondo_pulsador.png'); }
+
+/* NOTIFICACIÓN PERSONALIZADA */
 #custom-alert {
     position: fixed;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    background: var(--alert-red); /* Cambiado a Rojo */
+    background: var(--alert-red);
     color: white;
     padding: 12px 25px;
     border-radius: 30px;
@@ -40,10 +49,7 @@ body {
     pointer-events: none;
 }
 
-.alert-hidden {
-    top: -100px !important;
-    opacity: 0;
-}
+.alert-hidden { top: -100px !important; opacity: 0; }
 
 #main-title {
     margin-bottom: 20px;
@@ -51,6 +57,7 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 800;
+    color: var(--black);
 }
 
 .container {
@@ -60,8 +67,7 @@ body {
 }
 
 .hidden { display: none !important; }
-
-.section-label { font-weight: bold; margin-top: 15px; margin-bottom: 10px; }
+.section-label { font-weight: bold; margin-top: 15px; margin-bottom: 10px; color: var(--black); }
 
 input {
     width: 100%;
@@ -74,8 +80,8 @@ input {
     background: white;
 }
 
-/* Botones Malva (Siguiente, Crear Sala, Unirse) */
-.setup-btn, .join-btn {
+/* Botones Malva (Siguiente, Crear Sala, Unirse, Reiniciar) */
+.setup-btn, .join-btn, #reset-btn {
     width: 100%;
     padding: 15px;
     border: none;
@@ -91,7 +97,7 @@ input {
 
 .setup-btn { margin-top: 10px; }
 
-.setup-btn:active, .join-btn:active {
+.setup-btn:active, .join-btn:active, #reset-btn:active {
     transform: translateY(2px);
     box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
@@ -113,21 +119,14 @@ input {
     background: rgba(255,255,255,0.3);
 }
 
-.avatar-option.selected {
-    border-color: var(--mauve);
-    transform: scale(1.1);
-}
+.avatar-option.selected { border-color: var(--mauve); transform: scale(1.1); }
 
 .join-row { display: flex; gap: 10px; margin-top: 20px; }
 .join-row input { margin: 0; flex: 1; }
+.join-btn { width: auto; padding: 0 25px; }
 
-/* Ajuste específico para el botón unirse en la fila */
-.join-btn {
-    width: auto;
-    padding: 0 25px;
-}
+.header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; color: var(--white); text-shadow: 1px 1px 2px black; }
 
-.header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; }
 #winner-banner { background: var(--success); padding: 20px; border-radius: 20px; margin-bottom: 20px; color: white; border: 4px solid white; }
 #winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 10px; object-fit: cover; }
 
@@ -146,20 +145,9 @@ input {
 
 #main-buzzer:disabled { background: #535c68; opacity: 0.6; }
 
-/* Botón Siguiente Ronda (Malva) */
 #reset-btn {
-    background: var(--mauve); /* CORREGIDO: AHORA ES MALVA */
-    color: var(--white); /* Texto en blanco para contraste */
-    border: none;
+    width: auto;
     padding: 12px 25px;
     border-radius: 25px;
-    font-weight: bold;
     margin-top: 20px;
-    cursor: pointer;
-    box-shadow: 0 4px 0 rgba(0,0,0,0.1); /* Añadida sombra para consistencia */
-}
-
-#reset-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
