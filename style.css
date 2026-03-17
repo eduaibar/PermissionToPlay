@@ -20,15 +20,15 @@ body {
 
 #main-title {
     margin-bottom: 20px;
-    font-size: 1.8rem;
+    font-size: 1.6rem; /* Un poco más pequeño para dejar espacio a los avatares */
     text-transform: uppercase;
     letter-spacing: 2px;
 }
 
 .container {
     text-align: center;
-    width: 90%;
-    max-width: 400px;
+    width: 95%;
+    max-width: 450px;
 }
 
 .hidden { display: none !important; }
@@ -55,10 +55,11 @@ input {
     margin-top: 10px;
 }
 
+/* Selector de 15 avatares: 3 filas de 5 */
 .avatar-selector {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    gap: 8px;
     margin-bottom: 20px;
 }
 
@@ -145,4 +146,5 @@ input {
     border-radius: 25px;
     font-weight: bold;
     margin-top: 20px;
+    cursor: pointer;
 }
