@@ -6,7 +6,9 @@
     <title>Permission To Game</title>
     <link rel="stylesheet" href="style.css">
 </head>
-<body class="bg-step1"> <div id="custom-alert" class="alert-hidden">
+<body class="bg-step1">
+
+    <div id="custom-alert" class="alert-hidden">
         <span id="alert-message"></span>
     </div>
 
@@ -38,6 +40,7 @@
         </div>
 
         <div id="setup-step-2" class="hidden">
+            <img src="imagenes/fondo_sala.png" class="top-banner" alt="Sala">
             <div class="setup-actions">
                 <button onclick="startAsHost()" class="setup-btn">Crear Sala</button>
                 <div class="join-row">
@@ -52,14 +55,19 @@
                 <span id="room-display">SALA: ---</span>
                 <span id="player-display">YO: ---</span>
             </div>
+            
+            <img src="imagenes/fondo_pulsador.png" class="top-banner-game" alt="Juego">
+
             <div id="winner-banner" class="hidden">
                 <img id="winner-photo" src="" alt="Ganador">
                 <p>¡GANADOR!</p>
                 <h2 id="winner-name">---</h2>
             </div>
+
             <div class="buzzer-area">
                 <button id="main-buzzer">¡PULSAR!</button>
             </div>
+
             <div id="host-controls" class="hidden">
                 <button id="reset-btn">Siguiente Ronda</button>
             </div>
