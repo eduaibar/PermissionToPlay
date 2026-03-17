@@ -19,21 +19,16 @@ function showToast(message) {
     const msg = document.getElementById('alert-message');
     msg.innerText = message;
     toast.classList.remove('alert-hidden');
-    
-    setTimeout(() => {
-        toast.classList.add('alert-hidden');
-    }, 3000);
+    setTimeout(() => toast.classList.add('alert-hidden'), 3000);
 }
 
 function goToStep2() {
     const nameInput = document.getElementById('player-name').value.trim();
     if (!nameInput) return showToast("Por favor, introduce tu nombre");
     myName = nameInput;
-    
     document.getElementById('setup-step-1').classList.add('hidden');
     document.getElementById('setup-step-2').classList.remove('hidden');
-    
-    // CAMBIO DE FONDO A SALA
+    // CAMBIO A MORADO
     document.body.className = 'bg-step2';
 }
 
@@ -47,57 +42,40 @@ function startAsHost() {
     isHost = true;
     const roomID = Math.random().toString(36).substring(2, 6).toUpperCase();
     peer = new Peer(roomID);
-
     peer.on('open', (id) => {
         initGameUI(id);
         document.getElementById('host-controls').classList.remove('hidden');
     });
-
     peer.on('connection', (conn) => {
         connections.push(conn);
         conn.on('data', (data) => {
-            if (data.type === 'PRESS' && !winnerDeclared) {
-                handleGlobalBuzzer(data.name, data.avatar);
-            }
+            if (data.type === 'PRESS' && !winnerDeclared) handleGlobalBuzzer(data.name, data.avatar);
         });
     });
-
-    peer.on('error', (err) => showToast("Error al crear sala"));
+    peer.on('error', () => showToast("Error al crear sala"));
 }
 
 function startAsPlayer() {
     const roomID = document.getElementById('join-id').value.toUpperCase().trim();
     if (!roomID) return showToast("Introduce el código de sala");
-
     joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
     if (peer) peer.destroy();
     peer = new Peer();
-
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
-        
-        if (err.type === 'peer-not-found' || err.type === 'peer-unavailable') {
-            showToast("Código Incorrecto");
-        } else {
-            showToast("Error de conexión");
-        }
+        if (err.type === 'peer-not-found') showToast("Código Incorrecto");
+        else showToast("Error de conexión");
     });
 
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-        connToHost.on('open', () => {
-            initGameUI(roomID);
-        });
+        connToHost.on('open', () => initGameUI(roomID));
         connToHost.on('data', (data) => {
             if (data.type === 'WINNER') showWinnerUI(data.name, data.avatar);
             if (data.type === 'RESET') resetBuzzerUI();
-        });
-        connToHost.on('close', () => {
-            showToast("Conexión perdida");
-            setTimeout(() => location.reload(), 2000);
         });
     });
 }
@@ -106,9 +84,7 @@ function handleGlobalBuzzer(name, avatar) {
     if (winnerDeclared) return;
     winnerDeclared = true;
     showWinnerUI(name, avatar);
-    connections.forEach(conn => {
-        if (conn.open) conn.send({ type: 'WINNER', name: name, avatar: avatar });
-    });
+    connections.forEach(conn => { if (conn.open) conn.send({ type: 'WINNER', name: name, avatar: avatar }); });
 }
 
 function showWinnerUI(name, avatar) {
@@ -127,9 +103,8 @@ function resetBuzzerUI() {
 
 btn.onclick = () => {
     if (winnerDeclared) return;
-    if (isHost) {
-        handleGlobalBuzzer(myName, myAvatar);
-    } else if (connToHost && connToHost.open) {
+    if (isHost) handleGlobalBuzzer(myName, myAvatar);
+    else if (connToHost && connToHost.open) {
         connToHost.send({ type: 'PRESS', name: myName, avatar: myAvatar });
         btn.disabled = true;
     }
@@ -137,19 +112,15 @@ btn.onclick = () => {
 
 resetBtn.onclick = () => {
     resetBuzzerUI();
-    connections.forEach(conn => {
-        if (conn.open) conn.send({ type: 'RESET' });
-    });
+    connections.forEach(conn => { if (conn.open) conn.send({ type: 'RESET' }); });
 };
 
 function initGameUI(id) {
     document.getElementById('setup-step-2').classList.add('hidden');
     document.getElementById('game-screen').classList.remove('hidden');
     mainTitle.classList.add('hidden');
-    
-    // CAMBIO DE FONDO A JUEGO
+    // CAMBIO A BURDEOS
     document.body.className = 'bg-game';
-    
     document.getElementById('room-display').innerText = `SALA: ${id}`;
     document.getElementById('player-display').innerText = `YO: ${myName}`;
 }
