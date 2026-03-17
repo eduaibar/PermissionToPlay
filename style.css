@@ -11,10 +11,18 @@ body {
     background: var(--dark);
     color: white;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
     overflow: hidden;
+}
+
+#main-title {
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
 .container {
@@ -25,7 +33,6 @@ body {
 
 .hidden { display: none !important; }
 
-/* Setup & Avatares */
 input {
     width: 100%;
     padding: 15px;
@@ -34,30 +41,6 @@ input {
     border: none;
     box-sizing: border-box;
     font-size: 1rem;
-}
-
-.avatar-selector {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.avatar-option {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    border: 3px solid transparent;
-    cursor: pointer;
-    transition: 0.2s;
-    object-fit: cover;
-    background: #30336b;
-}
-
-.avatar-option.selected {
-    border-color: var(--success);
-    transform: scale(1.1);
-    box-shadow: 0 0 10px var(--success);
 }
 
 .setup-btn {
@@ -69,11 +52,52 @@ input {
     color: white;
     font-weight: bold;
     cursor: pointer;
+    margin-top: 10px;
 }
 
-.secondary { background: #30336b; }
+.avatar-selector {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin-bottom: 20px;
+}
 
-/* Cabecera Juego */
+.avatar-option {
+    width: 100%;
+    aspect-ratio: 1/1;
+    border-radius: 50%;
+    border: 3px solid transparent;
+    cursor: pointer;
+    object-fit: cover;
+    background: #30336b;
+}
+
+.avatar-option.selected {
+    border-color: var(--success);
+    box-shadow: 0 0 10px var(--success);
+}
+
+.join-row {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.join-row input {
+    margin: 0;
+    flex: 1;
+}
+
+.join-btn {
+    background: var(--success);
+    border: none;
+    color: white;
+    padding: 0 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
 .header {
     display: flex;
     justify-content: space-between;
@@ -82,13 +106,11 @@ input {
     margin-bottom: 20px;
 }
 
-/* Banner Ganador */
 #winner-banner {
     background: var(--success);
     padding: 20px;
     border-radius: 20px;
     margin-bottom: 20px;
-    animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 #winner-photo {
@@ -100,12 +122,6 @@ input {
     object-fit: cover;
 }
 
-@keyframes pop {
-    0% { transform: scale(0); opacity: 0; }
-    100% { transform: scale(1); opacity: 1; }
-}
-
-/* Botón Buzzer */
 #main-buzzer {
     width: 260px;
     height: 260px;
@@ -119,14 +135,7 @@ input {
     cursor: pointer;
 }
 
-#main-buzzer:active { transform: scale(0.9); }
-#main-buzzer:disabled { 
-    background: #535c68; 
-    box-shadow: none;
-    opacity: 0.6;
-}
-
-#host-controls { margin-top: 20px; }
+#main-buzzer:disabled { background: #535c68; opacity: 0.6; }
 
 #reset-btn {
     background: white;
@@ -135,5 +144,5 @@ input {
     padding: 12px 25px;
     border-radius: 25px;
     font-weight: bold;
-    cursor: pointer;
+    margin-top: 20px;
 }
