@@ -1,15 +1,17 @@
 :root {
-    --primary: #4834d4;
+    --bg-orange: #fff5e6; /* Naranja clarito y agradable */
+    --mauve: #b19cd9;    /* Malva bonito */
+    --mauve-dark: #967bb6; /* Malva para el efecto de pulsado */
     --danger: #eb4d4b;
     --success: #6ab04c;
-    --dark: #130f40;
+    --dark-text: #000000; /* Negro puro para las letras */
 }
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background: var(--dark);
-    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-orange);
+    color: var(--dark-text);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -18,11 +20,13 @@ body {
     overflow: hidden;
 }
 
+/* Título Principal */
 #main-title {
     margin-bottom: 20px;
-    font-size: 1.6rem; /* Un poco más pequeño para dejar espacio a los avatares */
+    font-size: 1.6rem;
     text-transform: uppercase;
     letter-spacing: 2px;
+    color: var(--dark-text); /* Letras negras */
 }
 
 .container {
@@ -33,32 +37,50 @@ body {
 
 .hidden { display: none !important; }
 
+/* Texto de elección de personaje */
+p {
+    color: var(--dark-text); /* Letras negras */
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+/* Inputs */
 input {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
     border-radius: 8px;
-    border: none;
+    border: 1px solid #ddd;
     box-sizing: border-box;
     font-size: 1rem;
+    background: white;
 }
 
+/* Botón Siguiente (Malva) */
 .setup-btn {
     width: 100%;
     padding: 15px;
     border: none;
     border-radius: 8px;
-    background: var(--primary);
-    color: white;
+    background-color: var(--mauve);
+    color: white; /* Letras blancas para mejor contraste con el malva */
     font-weight: bold;
+    font-size: 1.1rem;
     cursor: pointer;
     margin-top: 10px;
+    transition: background 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.setup-btn:active {
+    background-color: var(--mauve-dark);
+    transform: translateY(2px);
 }
 
 /* Selector de 15 avatares: 3 filas de 5 */
 .avatar-selector {
     display: grid;
-    grid-template-columns: repeat(5, 1fr); /* 5 columnas */
+    grid-template-columns: repeat(5, 1fr);
     gap: 8px;
     margin-bottom: 20px;
 }
@@ -67,17 +89,20 @@ input {
     width: 100%;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    border: 3px solid transparent;
+    border: 3px solid #fff;
     cursor: pointer;
     object-fit: cover;
-    background: #30336b;
+    background: #eee;
+    transition: all 0.2s ease;
 }
 
 .avatar-option.selected {
-    border-color: var(--success);
-    box-shadow: 0 0 10px var(--success);
+    border-color: var(--mauve);
+    transform: scale(1.1);
+    box-shadow: 0 0 15px rgba(177, 156, 217, 0.6);
 }
 
+/* Fila de Unirse (WhatsApp Style) */
 .join-row {
     display: flex;
     gap: 10px;
@@ -99,12 +124,14 @@ input {
     cursor: pointer;
 }
 
+/* Pantalla de Juego */
 .header {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
-    opacity: 0.7;
+    opacity: 0.8;
     margin-bottom: 20px;
+    color: var(--dark-text);
 }
 
 #winner-banner {
@@ -112,6 +139,7 @@ input {
     padding: 20px;
     border-radius: 20px;
     margin-bottom: 20px;
+    color: white;
 }
 
 #winner-photo {
@@ -123,24 +151,26 @@ input {
     object-fit: cover;
 }
 
+/* El Pulsador */
 #main-buzzer {
     width: 260px;
     height: 260px;
     border-radius: 50%;
-    border: 15px solid rgba(255,255,255,0.1);
+    border: 15px solid rgba(0,0,0,0.05);
     background: radial-gradient(circle, var(--danger), #c0392b);
     color: white;
     font-size: 2rem;
     font-weight: bold;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.6);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
     cursor: pointer;
 }
 
-#main-buzzer:disabled { background: #535c68; opacity: 0.6; }
+#main-buzzer:active { transform: scale(0.95); }
+#main-buzzer:disabled { background: #ccc; opacity: 0.6; box-shadow: none; }
 
 #reset-btn {
-    background: white;
-    color: var(--dark);
+    background: var(--mauve);
+    color: white;
     border: none;
     padding: 12px 25px;
     border-radius: 25px;
