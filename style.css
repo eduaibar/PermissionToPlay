@@ -9,7 +9,7 @@
     --white: #FFFFFF;
 }
 
-/* GESTIÓN DE FONDOS */
+/* GESTIÓN DE FONDOS REFORZADA */
 body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -23,13 +23,23 @@ body {
     overflow: hidden;
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover; /* Por defecto en PC se ve perfecto */
     transition: background 0.5s ease-in-out;
 }
 
+/* Ajuste específico para móvil */
+@media (max-width: 768px) {
+    body {
+        /* Con 'contain' la verás completa sin cortes, 
+           pero con naranja arriba y abajo si es muy horizontal */
+        background-size: contain; 
+        background-position: center center;
+    }
+}
+
 .bg-step1 { background-color: var(--bg-orange); background-image: none; }
-.bg-step2 { background-image: url('imagenes/fondo_sala.png'); }
-.bg-game  { background-image: url('imagenes/fondo_pulsador.png'); }
+.bg-step2 { background-image: url('imagenes/fondo_sala.png'); background-color: var(--bg-orange); }
+.bg-game  { background-image: url('imagenes/fondo_pulsador.png'); background-color: var(--bg-orange); }
 
 /* NOTIFICACIÓN PERSONALIZADA */
 #custom-alert {
@@ -57,17 +67,16 @@ body {
     text-transform: uppercase;
     letter-spacing: 2px;
     font-weight: 800;
-    color: var(--black);
 }
 
 .container {
     text-align: center;
     width: 95%;
     max-width: 450px;
+    z-index: 10;
 }
 
 .hidden { display: none !important; }
-.section-label { font-weight: bold; margin-top: 15px; margin-bottom: 10px; color: var(--black); }
 
 input {
     width: 100%;
@@ -80,7 +89,6 @@ input {
     background: white;
 }
 
-/* Botones Malva (Siguiente, Crear Sala, Unirse, Reiniciar) */
 .setup-btn, .join-btn, #reset-btn {
     width: 100%;
     padding: 15px;
@@ -92,15 +100,9 @@ input {
     font-size: 1.1rem;
     cursor: pointer;
     box-shadow: 0 4px 0 rgba(0,0,0,0.1);
-    transition: all 0.2s;
 }
 
 .setup-btn { margin-top: 10px; }
-
-.setup-btn:active, .join-btn:active, #reset-btn:active {
-    transform: translateY(2px);
-    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
-}
 
 .avatar-selector {
     display: grid;
@@ -116,7 +118,6 @@ input {
     border: 3px solid white;
     cursor: pointer;
     object-fit: cover;
-    background: rgba(255,255,255,0.3);
 }
 
 .avatar-option.selected { border-color: var(--mauve); transform: scale(1.1); }
@@ -125,9 +126,26 @@ input {
 .join-row input { margin: 0; flex: 1; }
 .join-btn { width: auto; padding: 0 25px; }
 
-.header { display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: bold; margin-bottom: 20px; color: var(--white); text-shadow: 1px 1px 2px black; }
+.header { 
+    display: flex; 
+    justify-content: space-between; 
+    font-size: 0.8rem; 
+    font-weight: bold; 
+    margin-bottom: 20px; 
+    color: var(--white); 
+    text-shadow: 1px 1px 3px black; /* Sombra para que se lea sobre la foto */
+}
 
-#winner-banner { background: var(--success); padding: 20px; border-radius: 20px; margin-bottom: 20px; color: white; border: 4px solid white; }
+#winner-banner { 
+    background: var(--success); 
+    padding: 20px; 
+    border-radius: 20px; 
+    margin-bottom: 20px; 
+    color: white; 
+    border: 4px solid white; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
 #winner-photo { width: 100px; height: 100px; border-radius: 50%; border: 4px solid white; margin-bottom: 10px; object-fit: cover; }
 
 #main-buzzer { 
@@ -143,11 +161,4 @@ input {
     cursor: pointer; 
 }
 
-#main-buzzer:disabled { background: #535c68; opacity: 0.6; }
-
-#reset-btn {
-    width: auto;
-    padding: 12px 25px;
-    border-radius: 25px;
-    margin-top: 20px;
-}
+#reset-btn { width: auto; padding: 12px 25px; border-radius: 25px; margin-top: 20px; }
