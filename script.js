@@ -59,7 +59,6 @@ function startAsPlayer() {
 
     peer = new Peer();
 
-    // Gestión de errores crítica para detectar salas inexistentes
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
@@ -73,7 +72,6 @@ function startAsPlayer() {
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
 
-        // SOLO inicializar la UI si la conexión se abre realmente
         connToHost.on('open', () => {
             initGameUI(roomID);
         });
