@@ -1,17 +1,18 @@
 :root {
-    --bg-orange: #fff5e6; /* Naranja clarito y agradable */
-    --mauve: #b19cd9;    /* Malva bonito */
-    --mauve-dark: #967bb6; /* Malva para el efecto de pulsado */
+    --bg-orange: #FFB347; /* Naranja "naranja" pero suave a la vista */
+    --mauve: #B19CD9;    /* Malva para botones */
+    --mauve-hover: #967BB6;
     --danger: #eb4d4b;
     --success: #6ab04c;
-    --dark-text: #000000; /* Negro puro para las letras */
+    --black: #000000;
+    --white: #FFFFFF;
 }
 
 body {
     margin: 0;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Segoe UI', sans-serif;
     background-color: var(--bg-orange);
-    color: var(--dark-text);
+    color: var(--black);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,13 +21,20 @@ body {
     overflow: hidden;
 }
 
-/* Título Principal */
 #main-title {
     margin-bottom: 20px;
-    font-size: 1.6rem;
+    font-size: 1.8rem;
     text-transform: uppercase;
     letter-spacing: 2px;
-    color: var(--dark-text); /* Letras negras */
+    color: var(--black);
+    font-weight: 800;
+}
+
+.section-label {
+    color: var(--black);
+    font-weight: bold;
+    margin-top: 15px;
+    margin-bottom: 10px;
 }
 
 .container {
@@ -37,51 +45,44 @@ body {
 
 .hidden { display: none !important; }
 
-/* Texto de elección de personaje */
-p {
-    color: var(--dark-text); /* Letras negras */
-    font-weight: 600;
-    margin-bottom: 15px;
-}
-
 /* Inputs */
 input {
     width: 100%;
     padding: 15px;
     margin: 10px 0;
-    border-radius: 8px;
-    border: 1px solid #ddd;
+    border-radius: 12px;
+    border: 2px solid rgba(0,0,0,0.1);
     box-sizing: border-box;
     font-size: 1rem;
     background: white;
 }
 
-/* Botón Siguiente (Malva) */
+/* Botones Principales (Malva) */
 .setup-btn {
     width: 100%;
     padding: 15px;
     border: none;
-    border-radius: 8px;
+    border-radius: 12px;
     background-color: var(--mauve);
-    color: white; /* Letras blancas para mejor contraste con el malva */
+    color: var(--white);
     font-weight: bold;
     font-size: 1.1rem;
     cursor: pointer;
     margin-top: 10px;
-    transition: background 0.3s ease;
-    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+    transition: all 0.2s;
 }
 
 .setup-btn:active {
-    background-color: var(--mauve-dark);
     transform: translateY(2px);
+    box-shadow: 0 2px 0 rgba(0,0,0,0.1);
 }
 
 /* Selector de 15 avatares: 3 filas de 5 */
 .avatar-selector {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
-    gap: 8px;
+    gap: 10px;
     margin-bottom: 20px;
 }
 
@@ -89,17 +90,17 @@ input {
     width: 100%;
     aspect-ratio: 1/1;
     border-radius: 50%;
-    border: 3px solid #fff;
+    border: 3px solid white;
     cursor: pointer;
     object-fit: cover;
-    background: #eee;
-    transition: all 0.2s ease;
+    background: rgba(255,255,255,0.3);
+    transition: 0.2s;
 }
 
 .avatar-option.selected {
     border-color: var(--mauve);
     transform: scale(1.1);
-    box-shadow: 0 0 15px rgba(177, 156, 217, 0.6);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
 }
 
 /* Fila de Unirse (WhatsApp Style) */
@@ -119,19 +120,19 @@ input {
     border: none;
     color: white;
     padding: 0 20px;
-    border-radius: 8px;
+    border-radius: 12px;
     font-weight: bold;
     cursor: pointer;
 }
 
-/* Pantalla de Juego */
+/* Juego */
 .header {
     display: flex;
     justify-content: space-between;
     font-size: 0.8rem;
-    opacity: 0.8;
+    font-weight: bold;
+    opacity: 0.9;
     margin-bottom: 20px;
-    color: var(--dark-text);
 }
 
 #winner-banner {
@@ -140,6 +141,7 @@ input {
     border-radius: 20px;
     margin-bottom: 20px;
     color: white;
+    border: 4px solid white;
 }
 
 #winner-photo {
@@ -151,26 +153,24 @@ input {
     object-fit: cover;
 }
 
-/* El Pulsador */
 #main-buzzer {
     width: 260px;
     height: 260px;
     border-radius: 50%;
-    border: 15px solid rgba(0,0,0,0.05);
+    border: 15px solid rgba(255,255,255,0.4);
     background: radial-gradient(circle, var(--danger), #c0392b);
     color: white;
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: bold;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.3);
     cursor: pointer;
 }
 
-#main-buzzer:active { transform: scale(0.95); }
-#main-buzzer:disabled { background: #ccc; opacity: 0.6; box-shadow: none; }
+#main-buzzer:disabled { background: #535c68; opacity: 0.6; }
 
 #reset-btn {
-    background: var(--mauve);
-    color: white;
+    background: var(--white);
+    color: var(--black);
     border: none;
     padding: 12px 25px;
     border-radius: 25px;
