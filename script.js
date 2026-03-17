@@ -72,16 +72,13 @@ function startAsPlayer() {
     joinBtnFinal.innerText = "...";
     joinBtnFinal.disabled = true;
 
-    // Si ya existía un peer de un intento fallido, lo destruimos
     if (peer) peer.destroy();
-    
     peer = new Peer();
 
     peer.on('error', (err) => {
         joinBtnFinal.innerText = "Unirse";
         joinBtnFinal.disabled = false;
         
-        // Detectar si la sala no existe
         if (err.type === 'peer-not-found' || err.type === 'peer-unavailable') {
             showToast("Código Incorrecto");
         } else {
@@ -91,16 +88,13 @@ function startAsPlayer() {
 
     peer.on('open', () => {
         connToHost = peer.connect(roomID);
-
         connToHost.on('open', () => {
             initGameUI(roomID);
         });
-
         connToHost.on('data', (data) => {
             if (data.type === 'WINNER') showWinnerUI(data.name, data.avatar);
             if (data.type === 'RESET') resetBuzzerUI();
         });
-
         connToHost.on('close', () => {
             showToast("Conexión perdida");
             setTimeout(() => location.reload(), 2000);
@@ -153,7 +147,7 @@ function initGameUI(id) {
     document.getElementById('game-screen').classList.remove('hidden');
     mainTitle.classList.add('hidden');
     
-    // CAMBIO DE FONDO A PULSADOR
+    // CAMBIO DE FONDO A JUEGO
     document.body.className = 'bg-game';
     
     document.getElementById('room-display').innerText = `SALA: ${id}`;
